@@ -62,15 +62,14 @@ function calculate_bounce(ball)
 end
 
 function collision(ball)
-  hit_player = ball_hitting(player) and
-    ball.x-4 < player.behind
-  hit_npc = ball_hitting(npc) and
-    ball.x+4 > npc.behind
-  return hit_player or hit_npc
+  return ball_hitting(player)
+      or ball_hitting(npc)
 end
 
 function ball_hitting(paddle)
-  return ball.y <= paddle.y+8
+  return ball.x-4 < paddle.behind
+     and ball.x+4 > paddle.behind
+     and ball.y <= paddle.y+8
      and ball.y >= paddle.y-8
 end
 
