@@ -6,8 +6,6 @@ width = 128
 half = width/2
 padding = 10
 paddle_speed = 3
-behind_player = padding
-behind_npc = width-padding
 buttons = {
   left = 0,
   right = 1,
@@ -18,14 +16,16 @@ buttons = {
 }
 -- state
 player = {
-  x = behind_player-8,
+  x = padding-8,
   y = half,
-  left_facing = false
+  left_facing = false,
+  behind = padding
 }
 npc = {
-  x = behind_npc,
+  x = width-padding,
   y = half,
-  left_facing = true
+  left_facing = true,
+  behind = width-padding
 }
 ball = {
   x = half,
@@ -55,23 +55,23 @@ end
 function calculate_bounce(ball)
   ball.dirx = -1
   if ball.x > half then
-    return behind_npc-4
+    return npc.behind-4
   else
-    return behind_player+4
+    return player.behind+4
   end
 end
 
 function collision(ball)
-  if ball.x < behind_player+4
-  and ball.y <= player.y+8
-  and ball.y >= player.y-8 then
-    return true
-  elseif ball.x > behind_npc-4
-  and ball.y <= npc.y+8
-  and ball.y >= npc.y-8 then
-    return true
-  end
-  return false
+  hit_player = ball_hitting(player) and
+    ball.x-4 < player.behind
+  hit_npc = ball_hitting(npc) and
+    ball.x+4 > npc.behind
+  return hit_player or hit_npc
+end
+
+function ball_hitting(paddle)
+  return ball.y <= paddle.y+8
+     and ball.y >= paddle.y-8
 end
 
 function _update()
