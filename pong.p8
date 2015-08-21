@@ -6,8 +6,8 @@ width = 128
 half = width/2
 padding = 10
 paddle_speed = 3
-behind_player = padding+8
-behind_npc = width-padding-8
+behind_player = padding
+behind_npc = width-padding
 buttons = {
   left = 0,
   right = 1,
@@ -18,12 +18,12 @@ buttons = {
 }
 -- state
 player = {
-  x = padding-8,
+  x = behind_player-8,
   y = half,
   left_facing = false
 }
 npc = {
-  x = width-padding,
+  x = behind_npc,
   y = half,
   left_facing = true
 }
@@ -46,32 +46,27 @@ function move_player()
 end
 
 function move_ball()
-  print("hey!",10,10)
   ball.x += ball.dirx * ball.speed
   ball.y += ball.diry * ball.speed
   if not collision(ball) then return end
-  new_position = calculate_bounce(ball)
-  ball.x = new_position.x
-  ball.y = new_position.y
+  ball.x = calculate_bounce(ball)
 end
 
 function calculate_bounce(ball)
   ball.dirx = -1
   if ball.x > half then
-    ball.x = behind_npc
+    return behind_npc-4
   else
-    ball.x = behind_player
+    return behind_player+4
   end
 end
 
 function collision(ball)
-  print(ball.y,0,0)
-  print(npc.y,0,20)
-  if ball.x < behind_player
+  if ball.x < behind_player+4
   and ball.y <= player.y+8
   and ball.y >= player.y-8 then
     return true
-  elseif ball.x > behind_npc
+  elseif ball.x > behind_npc-4
   and ball.y <= npc.y+8
   and ball.y >= npc.y-8 then
     return true
