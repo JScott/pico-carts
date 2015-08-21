@@ -32,7 +32,8 @@ ball = {
   y = half,
   speed = 3,
   dirx = 1,
-  diry = 0
+  diry = 0,
+  radius = 4
 }
 
 -- acting
@@ -55,9 +56,9 @@ end
 function calculate_bounce(ball)
   ball.dirx = -1
   if ball.x > half then
-    return npc.behind-4
+    return npc.behind-ball.radius
   else
-    return player.behind+4
+    return player.behind+ball.radius
   end
 end
 
@@ -67,8 +68,8 @@ function collision(ball)
 end
 
 function ball_hitting(paddle)
-  return ball.x-4 < paddle.behind
-     and ball.x+4 > paddle.behind
+  return ball.x-ball.radius < paddle.behind
+     and ball.x+ball.radius > paddle.behind
      and ball.y <= paddle.y+8
      and ball.y >= paddle.y-8
 end
