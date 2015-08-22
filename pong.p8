@@ -56,6 +56,7 @@ function move_ball()
   ball.x += ball.dirx * ball.speed
   ball.y += ball.diry * ball.speed
   edge_collision()
+  score_collision()
   if not paddle_collision() then return end
   ball.x = calculate_bounce()
 end
@@ -87,6 +88,23 @@ end
 function paddle_collision()
   return ball_hitting(player)
       or ball_hitting(npc)
+end
+
+function score_collision()
+  scored = false
+  if ball.x > width then
+    scored = true
+    player.score += 1
+  elseif ball.x < 0 then
+    scored = true
+    npc.score += 1
+  end
+  if scored then reset_ball() end
+end
+
+function reset_ball()
+  ball.x = half
+  ball.y = half
 end
 
 function ball_hitting(paddle)
