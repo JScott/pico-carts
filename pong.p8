@@ -16,16 +16,14 @@ buttons = {
 }
 -- state
 player = {
-  x = padding-8,
+  x = padding,
   y = half,
-  left_facing = false,
-  behind = padding
+  left_facing = false
 }
 npc = {
   x = width-padding,
   y = half,
-  left_facing = true,
-  behind = width-padding
+  left_facing = true
 }
 ball = {
   x = half,
@@ -56,9 +54,9 @@ end
 function calculate_bounce(ball)
   ball.dirx = -1
   if ball.x > half then
-    return npc.behind-ball.radius
+    return npc.x-ball.radius
   else
-    return player.behind+ball.radius
+    return player.x+ball.radius
   end
 end
 
@@ -68,8 +66,8 @@ function collision(ball)
 end
 
 function ball_hitting(paddle)
-  return ball.x-ball.radius < paddle.behind
-     and ball.x+ball.radius > paddle.behind
+  return ball.x-ball.radius < paddle.x
+     and ball.x+ball.radius > paddle.x
      and ball.y <= paddle.y+8
      and ball.y >= paddle.y-8
 end
@@ -90,7 +88,12 @@ function _draw()
 end
 
 function draw_paddle(actor)
-  spr(1,actor.x,actor.y-8,1,2,
+  if actor.left_facing then
+    drawx = actor.x
+  else
+    drawx = actor.x-8
+  end
+  spr(1,drawx,actor.y-8,1,2,
       actor.left_facing,false)
 end
 
