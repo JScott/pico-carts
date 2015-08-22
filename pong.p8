@@ -6,6 +6,7 @@ width = 128
 half = width/2
 padding = 10
 paddle_speed = 3
+offset_power = 1.5
 buttons = {
   left = 0,
   right = 1,
@@ -60,17 +61,18 @@ function edge_collision()
 end
 
 function calculate_bounce()
+  vector_x = 8/offset_power
   if ball.x > half then
-    offset = ball.y-npc.y
-    length = vector_length(-8,offset)
-    ball.dirx = -8/length
-    ball.diry = offset/length
+    vector_y = ball.y-npc.y
+    length = vector_length(-vector_x,vector_y)
+    ball.dirx = -vector_x/length
+    ball.diry = vector_y/length
     return npc.x-ball.radius
   else
-    offset = ball.y-player.y
-    length = vector_length(8,offset)     
-    ball.dirx = 8/length
-    ball.diry = offset/length
+    vector_y = ball.y-player.y
+    length = vector_length(vector_x,vector_y)   
+    ball.dirx = vector_x/length
+    ball.diry = vector_y/length
     return player.x+ball.radius
   end
 end
