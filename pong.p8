@@ -88,9 +88,8 @@ function _draw()
 end
 
 function draw_paddle(actor)
-  if actor.left_facing then
-    drawx = actor.x
-  else
+  drawx = actor.x
+  if not actor.left_facing then
     drawx = actor.x-8
   end
   spr(1,drawx,actor.y-8,1,2,
