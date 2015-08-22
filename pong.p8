@@ -6,7 +6,7 @@ width = 128
 half = width/2
 padding = 10
 paddle_speed = 3
-offset_power = 1.5
+offset_power = 2.5
 buttons = {
   left = 0,
   right = 1,
@@ -45,10 +45,23 @@ function move_player()
   elseif button("down") then
     player.y += paddle_speed
   end
-  if player.y-8 < 0 then
-    player.y = 8
-  elseif player.y+8 > width then
-    player.y = width-8
+  bound(player)
+end
+
+function move_npc()
+  distance = npc.y - ball.y
+  offset = abs(distance)
+  offset = min(offset,paddle_speed)
+  if distance < 0 then offset *= -1 end
+  npc.y -= offset
+  bound(npc)
+end
+
+function bound(paddle)
+  if paddle.y-8 < 0 then
+    paddle.y = 8
+  elseif paddle.y+8 > width then
+    paddle.y = width-8
   end
 end
 
@@ -62,8 +75,11 @@ function move_ball()
 end
 
 function edge_collision()
-  if ball.y-ball.radius < 0
-  or ball.y+ball.radius > width then
+  if ball.y-ball.radius < 0 then
+    ball.y += ball.radius
+    ball.diry *= -1
+  elseif ball.y+ball.radius > width then
+    ball.y -= ball.radius
     ball.diry *= -1
   end
 end
@@ -105,6 +121,8 @@ end
 function reset_ball()
   ball.x = half
   ball.y = half
+  ball.dirx = 1
+  ball.diry = 0
 end
 
 function ball_hitting(paddle)
@@ -116,6 +134,7 @@ end
 
 function _update()
   move_player()
+  move_npc()
   move_ball()
 end
 
