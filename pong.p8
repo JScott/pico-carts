@@ -75,11 +75,14 @@ function move_ball()
 end
 
 function edge_collision()
+  offset = 0
   if ball.y-ball.radius < 0 then
-    ball.y += ball.radius
-    ball.diry *= -1
+    offset = ball.radius
   elseif ball.y+ball.radius > width then
-    ball.y -= ball.radius
+    offset = -ball.radius
+  end
+  if offset != 0 then
+    ball.y += offset
     ball.diry *= -1
   end
 end
