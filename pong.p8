@@ -29,7 +29,7 @@ npc = {
 ball = {
   x = half,
   y = half,
-  speed = 3,
+  speed = 2,
   dirx = 1,
   diry = 0,
   radius = 4
@@ -42,6 +42,11 @@ function move_player()
     player.y -= paddle_speed
   elseif button("down") then
     player.y += paddle_speed
+  end
+  if player.y-8 < 0 then
+    player.y = 8
+  elseif player.y+8 > width then
+    player.y = width-8
   end
 end
 
@@ -61,20 +66,20 @@ function edge_collision()
 end
 
 function calculate_bounce()
+  -- todo: refactor
+  paddle = player
+  new_x = ball.x+ball.radius
   vector_x = 8/offset_power
   if ball.x > half then
-    vector_y = ball.y-npc.y
-    length = vector_length(-vector_x,vector_y)
-    ball.dirx = -vector_x/length
-    ball.diry = vector_y/length
-    return npc.x-ball.radius
-  else
-    vector_y = ball.y-player.y
-    length = vector_length(vector_x,vector_y)   
-    ball.dirx = vector_x/length
-    ball.diry = vector_y/length
-    return player.x+ball.radius
+    paddle = npc
+    new_x = ball.x-ball.radius
+    vector_x *= -1
   end
+  vector_y = ball.y-paddle.y
+  length = vector_length(vector_x,vector_y)
+  ball.dirx = vector_x/length
+  ball.diry = vector_y/length
+  return new_x
 end
 
 function paddle_collision()
