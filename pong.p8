@@ -47,20 +47,27 @@ end
 function move_ball()
   ball.x += ball.dirx * ball.speed
   ball.y += ball.diry * ball.speed
-  if not collision(ball) then return end
-  ball.x = calculate_bounce(ball)
+  if not paddle_collision() then return end
+  ball.x = calculate_bounce()
 end
 
-function calculate_bounce(ball)
-  ball.dirx = -1
+function calculate_bounce()
   if ball.x > half then
+    offset = ball.y-npc.y
+    length = vector_length(-8,offset)
+    ball.dirx = -8/length
+    ball.diry = offset/length
     return npc.x-ball.radius
   else
+    offset = ball.y-player.y
+    length = vector_length(8,offset)     
+    ball.dirx = 8/length
+    ball.diry = offset/length
     return player.x+ball.radius
   end
 end
 
-function collision(ball)
+function paddle_collision()
   return ball_hitting(player)
       or ball_hitting(npc)
 end
