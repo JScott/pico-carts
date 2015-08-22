@@ -19,12 +19,14 @@ buttons = {
 player = {
   x = padding,
   y = half,
-  left_facing = false
+  left_facing = false,
+  score = 0
 }
 npc = {
   x = width-padding,
   y = half,
-  left_facing = true
+  left_facing = true,
+  score = 0
 }
 ball = {
   x = half,
@@ -103,10 +105,16 @@ end
 
 function _draw()
   cls()
-  draw_paddle(player)
   line(half,0,half,width)
+  draw_paddle(player)
   draw_paddle(npc)
   draw_ball()
+  draw_score()
+end
+
+function draw_score()
+  print(player.score,5,5)
+  print(npc.score,half+5,5)
 end
 
 function draw_paddle(actor)
