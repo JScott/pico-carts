@@ -47,8 +47,16 @@ end
 function move_ball()
   ball.x += ball.dirx * ball.speed
   ball.y += ball.diry * ball.speed
+  edge_collision()
   if not paddle_collision() then return end
   ball.x = calculate_bounce()
+end
+
+function edge_collision()
+  if ball.y-ball.radius < 0
+  or ball.y+ball.radius > width then
+    ball.diry *= -1
+  end
 end
 
 function calculate_bounce()
