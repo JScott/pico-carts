@@ -101,7 +101,7 @@ function calculate_bounce()
     new_x = ball.x-ball.radius
     vector_x *= -1
   end
-  vector_y = ball.y-paddle.y
+  vector_y = ball.diry+ball.y-paddle.y
   length = vector_length(vector_x,vector_y)
   ball.dirx = vector_x/length
   ball.diry = vector_y/length
