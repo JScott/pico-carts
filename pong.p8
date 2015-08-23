@@ -52,13 +52,12 @@ end
 
 function move_npc()
   distance = ball.y - npc.y
-  if distance > -npc.speed
-  and distance < npc.speed then
-    npc.y = ball.y
-  elseif distance > 0 then
+  if distance > npc.speed then
     npc.y += npc.speed
-  elseif distance < 0 then
+  elseif distance < -npc.speed then
     npc.y -= npc.speed
+  else
+    npc.y = ball.y
   end
   bound(npc)
 end
