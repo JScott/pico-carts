@@ -5,8 +5,7 @@ __lua__
 width = 128
 half = width/2
 padding = 10
-paddle_speed = 3
-offset_power = 2.5
+offset_power = 1 -- 2.5
 buttons = {
   left = 0,
   right = 1,
@@ -21,7 +20,7 @@ player = {
   y = half,
   left_facing = false,
   score = 0,
-  speed = paddle_speed
+  speed = 3
 }
 npc = {
   x = width-padding,
@@ -43,9 +42,9 @@ ball = {
 
 function move_player()
   if button("up") then
-    player.y -= paddle_speed
+    player.y -= player.speed
   elseif button("down") then
-    player.y += paddle_speed
+    player.y += player.speed
   end
   bound(player)
 end
