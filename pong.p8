@@ -20,13 +20,15 @@ player = {
   x = padding,
   y = half,
   left_facing = false,
-  score = 0
+  score = 0,
+  speed = paddle_speed
 }
 npc = {
   x = width-padding,
   y = half,
   left_facing = true,
-  score = 0
+  score = 0,
+  speed = 1
 }
 ball = {
   x = half,
@@ -49,11 +51,15 @@ function move_player()
 end
 
 function move_npc()
-  distance = npc.y - ball.y
-  offset = abs(distance)
-  offset = min(offset,paddle_speed)
-  if distance < 0 then offset *= -1 end
-  npc.y -= offset
+  distance = ball.y - npc.y
+  if distance > -npc.speed
+  and distance < npc.speed then
+    npc.y = ball.y
+  elseif distance > 0 then
+    npc.y += npc.speed
+  elseif distance < 0 then
+    npc.y -= npc.speed
+  end
   bound(npc)
 end
 
