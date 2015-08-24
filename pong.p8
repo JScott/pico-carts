@@ -2,6 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 4
 __lua__
 -- magic numbers
+countdown = 4
 width = 128
 half = width/2
 padding = 10
@@ -77,6 +78,7 @@ function bound(paddle)
 end
 
 function move_ball()
+  if countdown >= 1 then return end
   speed = ball.speed_base
   speed += ball.bounces * ball.speed_increment
   ball.x += ball.dirx * speed
@@ -142,6 +144,7 @@ function reset_ball()
   ball.dirx = 1
   ball.diry = 0
   ball.bounces = 0
+  countdown = 4
 end
 
 function check_for_winner()
@@ -163,6 +166,7 @@ function reset_game()
   reset_ball()
   player.score = 0
   npc.score = 0
+  count_down = 3
   winner = nil
 end
 
@@ -173,6 +177,9 @@ function _update()
     move_player()
     move_npc()
     move_ball()
+  end
+  if countdown > 0 then
+    countdown -= 0.04
   end
 end
 
@@ -198,6 +205,13 @@ function draw_game_screen()
   draw_paddle(npc)
   draw_ball()
   draw_score()
+  draw_countdown()
+end
+
+function draw_countdown()
+  if countdown >= 1 then
+    print(flr(countdown),half,half)
+  end
 end
 
 function draw_score()
