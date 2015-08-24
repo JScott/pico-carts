@@ -5,7 +5,7 @@ __lua__
 width = 128
 half = width/2
 padding = 10
-offset_power = 1 -- 2.5
+offset_power = 1
 buttons = {
   left = 0,
   right = 1,
@@ -27,12 +27,14 @@ npc = {
   y = half,
   left_facing = true,
   score = 0,
-  speed = 1
+  speed = 1.75
 }
 ball = {
   x = half,
   y = half,
-  speed = 2,
+  speed_base = 1.5,
+  speed_increment = 0.33,
+  bounces = 0,
   dirx = 1,
   diry = 0,
   radius = 4
@@ -74,8 +76,10 @@ function bound(paddle)
 end
 
 function move_ball()
-  ball.x += ball.dirx * ball.speed
-  ball.y += ball.diry * ball.speed
+  speed = ball.speed_base
+  speed += ball.bounces * ball.speed_increment
+  ball.x += ball.dirx * speed
+  ball.y += ball.diry * speed
   edge_collision()
   score_collision()
   if not paddle_collision() then return end
@@ -109,6 +113,7 @@ function calculate_bounce()
   length = vector_length(vector_x,vector_y)
   ball.dirx = vector_x/length
   ball.diry = vector_y/length
+  ball.bounces += 1
   return new_x
 end
 
@@ -134,6 +139,7 @@ function reset_ball()
   ball.y = half
   ball.dirx = 1
   ball.diry = 0
+  ball.bounces = 0
 end
 
 function ball_hitting(paddle)
