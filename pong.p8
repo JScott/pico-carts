@@ -41,10 +41,14 @@ ball = {
 -- acting
 
 function move_player()
+  speed = player.speed
+  if button("a") then
+    speed /= 2
+  end
   if button("up") then
-    player.y -= player.speed
+    player.y -= speed
   elseif button("down") then
-    player.y += player.speed
+    player.y += speed
   end
   bound(player)
 end
