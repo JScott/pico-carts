@@ -39,6 +39,7 @@ ball = {
   diry = 0,
   radius = 4
 }
+winner = nil
 
 -- acting
 
@@ -131,6 +132,7 @@ function score_collision()
     scored = true
     npc.score += 1
   end
+  check_for_winner()
   if scored then reset_ball() end
 end
 
@@ -142,6 +144,14 @@ function reset_ball()
   ball.bounces = 0
 end
 
+function check_for_winner()
+  if player.score >= 3 then
+    winner = "player"
+  elseif npc.score >= 3 then
+    winner = "npc"
+  end
+end
+
 function ball_hitting(paddle)
   return ball.x-ball.radius < paddle.x
      and ball.x+ball.radius > paddle.x
@@ -149,16 +159,40 @@ function ball_hitting(paddle)
      and ball.y >= paddle.y-8
 end
 
+function reset_game()
+  reset_ball()
+  player.score = 0
+  npc.score = 0
+  winner = nil
+end
+
 function _update()
-  move_player()
-  move_npc()
-  move_ball()
+  if winner then
+    if button("b") then reset_game() end
+  else
+    move_player()
+    move_npc()
+    move_ball()
+  end
 end
 
 -- drawing  
 
 function _draw()
   cls()
+  if winner then
+    draw_win_screen()
+  else
+    draw_game_screen()
+  end
+end
+
+function draw_win_screen()
+  print(winner.." won!",20,half)
+  print("press b to play again",20,half+10)
+end
+
+function draw_game_screen()
   line(half,0,half,width)
   draw_paddle(player)
   draw_paddle(npc)
