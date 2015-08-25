@@ -200,7 +200,6 @@ function draw_win_screen()
 end
 
 function draw_game_screen()
-  line(half,0,half,width)
   draw_background()
   draw_paddle(player)
   draw_paddle(npc)
