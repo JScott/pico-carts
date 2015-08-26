@@ -201,8 +201,12 @@ function _draw()
 end
 
 function draw_win_screen()
-  print(winner.." won!",20,half)
-  print("press b to play again",20,half+10)
+  if winner == "player" then
+    print("you did it!",20,half-20)
+  else
+    print("so close!",20,half-20)
+  end
+  print("press b to play again",20,half-10)
 end
 
 function draw_game_screen()
