@@ -213,11 +213,13 @@ function draw_background()
 end
 
 function draw_countdown()
-  if countdown >= 0 then
-    sprite = (3-flr(countdown))*16
+  if countdown >= 1
+  and countdown < 3 then
+    sprite = countdown-1
+    sprite = 3-(flr(sprite*2))
+    sprite *= 16
     spr(3+sprite,
         half-27,half-20,4,1)
-    print(flr(countdown),half,half)
   end
 end
 
